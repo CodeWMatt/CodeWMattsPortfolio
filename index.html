@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CodeWMatt</title>
+<link rel="icon" type="image/png" href="images/about_me.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css?v=34">
+</head>
+<body>
+
+  <!-- background blob layer -->
+  <div class="bg-layer" aria-hidden="true">
+    <div class="blob blob-a"></div>
+    <div class="blob blob-b"></div>
+    <div class="blob blob-c"></div>
+    <div class="blob blob-d"></div>
+    <div class="grain"></div>
+  </div>
+
+  <!-- top nav -->
+  <header class="topbar">
+    <div class="brand-pill glass" data-view-target="home" tabindex="0" role="button" aria-label="Go to home">MLL</div>
+
+    <nav class="nav-pill glass" aria-label="Section navigation">
+      <span class="nav-slider" aria-hidden="true"></span>
+      <button class="nav-link is-active" data-view-target="home">Home</button>
+      <button class="nav-link" data-view-target="about">About Me</button>
+      <button class="nav-link" data-view-target="education">Education</button>
+      <button class="nav-link" data-view-target="achievements">Achievements</button>
+      <button class="nav-link" data-view-target="family">Family</button>
+      <button class="nav-link" data-view-target="batchmates">Batchmates</button>
+    </nav>
+
+    <button class="mode-toggle glass" id="modeToggle" aria-label="Toggle dark mode" aria-pressed="false">
+      <span class="mode-icon sun" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="16" height="16"><circle cx="12" cy="12" r="4.6" fill="currentColor"/><g stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="4.2" y1="19.8" x2="6" y2="18"/><line x1="18" y1="6" x2="19.8" y2="4.2"/></g></svg>
+      </span>
+      <span class="mode-icon moon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z" fill="currentColor"/></svg>
+      </span>
+      <span class="mode-knob"></span>
+    </button>
+  </header>
+
+  <main id="viewport">
+
+    <!-- ================= HOME / DASHBOARD ================= -->
+    <section class="view is-active" id="view-home" data-view="home">
+
+      <!-- decorative badges drifting behind all home content -->
+      <div class="home-float-layer" aria-hidden="true">
+        <span class="float-badge glass fh-1"><span class="fb-icon">⌨️</span>Code</span>
+        <span class="float-badge glass fh-2"><span class="fb-icon">🧮</span>Solve</span>
+        <span class="float-badge glass fh-3"><span class="fb-icon">💡</span>Think</span>
+        <span class="float-badge glass fh-4"><span class="fb-icon">🎨</span>Create</span>
+      </div>
+
+      <div class="home-intro">
+        <p class="eyebrow">Hello! I am</p>
+        <h1 class="home-title glass-text"><span id="homeTypeTarget" class="type-target">MATT LAURENCE F. LOPEZ</span></h1>
+        <p class="home-sub">Get to know me!</p>
+      </div>
+
+      <div class="tile-grid">
+
+        <button class="tile glass" data-view-target="about" style="--tile-delay:0">
+          <span class="tile-shine" aria-hidden="true"></span>
+          <span class="tile-icon">
+            <span class="tile-icon-emoji" aria-hidden="true">🧑‍💻</span>
+          </span>
+          <span class="tile-label">About Me</span>
+          <span class="tile-sub">Who I am</span>
+        </button>
+
+        <button class="tile glass" data-view-target="education" style="--tile-delay:1">
+          <span class="tile-shine" aria-hidden="true"></span>
+          <span class="tile-icon">
+            <span class="tile-icon-emoji" aria-hidden="true">🎓</span>
+          </span>
+          <span class="tile-label">Education</span>
+          <span class="tile-sub">Coming soon</span>
+        </button>
+
+        <button class="tile glass" data-view-target="achievements" style="--tile-delay:2">
+          <span class="tile-shine" aria-hidden="true"></span>
+          <span class="tile-icon">
+            <span class="tile-icon-emoji" aria-hidden="true">🏆</span>
+          </span>
+          <span class="tile-label">Achievements</span>
+          <span class="tile-sub">Coming soon</span>
+        </button>
+
+        <button class="tile glass" data-view-target="family" style="--tile-delay:3">
+          <span class="tile-shine" aria-hidden="true"></span>
+          <span class="tile-icon">
+            <span class="tile-icon-emoji" aria-hidden="true">👨‍👩‍👧‍👦</span>
+          </span>
+          <span class="tile-label">Family</span>
+          <span class="tile-sub">Coming soon</span>
+        </button>
+
+        <button class="tile glass" data-view-target="batchmates" style="--tile-delay:4">
+          <span class="tile-shine" aria-hidden="true"></span>
+          <span class="tile-icon">
+            <span class="tile-icon-emoji" aria-hidden="true">🤝</span>
+          </span>
+          <span class="tile-label">Batchmates</span>
+          <span class="tile-sub">Coming soon</span>
+        </button>
+
+      </div>
+    </section>
+
+    <!-- ================= ABOUT ME ================= -->
+    <section class="view" id="view-about" data-view="about">
+      <button class="back-btn glass" data-view-target="home" aria-label="Back to home">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path d="M15 4 7 12l8 8" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Home
+      </button>
+
+      <div class="about-wrap">
+
+        <div class="about-portrait-col">
+          <div class="portrait-frame">
+            <div class="portrait-glow" aria-hidden="true"></div>
+            <img src="images/2by2.jpg" alt="Matt Laurence F. Lopez" class="portrait-placeholder">
+
+            <span class="float-badge glass fb-1"><span class="fb-icon">⌨️</span>Code</span>
+            <span class="float-badge glass fb-2"><span class="fb-icon">🧮</span>Solve</span>
+            <span class="float-badge glass fb-3"><span class="fb-icon">💡</span>Think</span>
+            <span class="float-badge glass fb-4"><span class="fb-icon">🎨</span>Create</span>
+          </div>
+        </div>
+
+        <div class="about-content-col">
+          <div class="name-plate glass-text">
+            <h2 id="aboutTypeTarget" class="type-target">MATT LAURENCE F. LOPEZ</h2>
+          </div>
+
+          <p class="about-paragraph">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </p>
+
+          <div class="social-row">
+            <a href="#" class="social-btn glass" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M6.94 8.5H3.56V20.5H6.94V8.5ZM5.25 3.5A2 2 0 1 0 5.27 7.5A2 2 0 0 0 5.25 3.5ZM20.5 20.5H17.13V14.28C17.13 12.77 17.1 10.83 15.02 10.83C12.9 10.83 12.58 12.47 12.58 14.17V20.5H9.2V8.5H12.44V10.01H12.49C12.95 9.15 14.06 8.24 15.72 8.24C19.14 8.24 20.5 10.47 20.5 13.92V20.5Z"/></svg>
+            </a>
+            <a href="#" class="social-btn glass" aria-label="GitHub">
+              <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 2C6.48 2 2 6.58 2 12.2c0 4.49 2.87 8.3 6.84 9.65.5.1.68-.22.68-.49v-1.92c-2.78.62-3.37-1.36-3.37-1.36-.46-1.18-1.11-1.5-1.11-1.5-.9-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.89 1.55 2.34 1.1 2.91.84.09-.66.35-1.1.63-1.36-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05a9.3 9.3 0 0 1 5 0c1.9-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.79-4.57 5.05.36.32.68.94.68 1.9v2.82c0 .27.18.6.69.49A10.01 10.01 0 0 0 22 12.2C22 6.58 17.52 2 12 2Z"/></svg>
+            </a>
+            <a href="#" class="social-btn glass" aria-label="X">
+              <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M13.6 10.6 20.3 3h-2l-5.8 6.6L7.9 3H3l7 9.9L3 21h2l6.1-7 5 7H21l-7.4-10.4Zm-2.2 2.5-.7-1L5.4 4.4h2.2l4.5 6.3.7 1 5.9 8.2h-2.2l-4.7-6.4Z"/></svg>
+            </a>
+            <a href="#" class="social-btn glass" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M13.5 21v-8h2.7l.4-3.1h-3.1V8c0-.9.25-1.5 1.55-1.5H16.7V3.7C16.4 3.6 15.4 3.5 14.3 3.5c-2.3 0-3.9 1.4-3.9 4v2.4H7.7v3.1h2.7v8h3.1Z"/></svg>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= EDUCATIONAL ATTAINMENT ================= -->
+    <section class="view" id="view-education" data-view="education">
+
+      <!-- decorative education-themed emojis drifting behind everything -->
+      <div class="edu-float-layer" aria-hidden="true">
+        <span class="edu-float-emoji glass ee-1">🎓</span>
+        <span class="edu-float-emoji glass ee-2">📚</span>
+        <span class="edu-float-emoji glass ee-3">✏️</span>
+        <span class="edu-float-emoji glass ee-4">🏫</span>
+        <span class="edu-float-emoji glass ee-5">📝</span>
+        <span class="edu-float-emoji glass ee-6">🔬</span>
+        <span class="edu-float-emoji glass ee-7">🧮</span>
+        <span class="edu-float-emoji glass ee-8">📐</span>
+        <span class="edu-float-emoji glass ee-9">🌐</span>
+        <span class="edu-float-emoji glass ee-10">🏆</span>
+      </div>
+
+      <button class="back-btn glass" data-view-target="home" aria-label="Back to home">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path d="M15 4 7 12l8 8" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Home
+      </button>
+
+      <div class="edu-intro">
+        <p class="eyebrow">Educational Attainment</p>
+        <h2 class="edu-heading glass-text">My School Journey</h2>
+      </div>
+
+      <div class="edu-scroll">
+
+        <!-- University of the Cordilleras — most recent first -->
+        <article class="edu-card glass edu-card--img-left">
+          <a class="edu-logo-link" href="https://www.uc-bcf.edu.ph/" target="_blank" rel="noopener noreferrer" aria-label="Visit University of the Cordilleras website">
+            <span class="edu-logo-plate">
+              <img src="images/UClogo.jpg" alt="University of the Cordilleras logo" class="edu-logo">
+            </span>
+          </a>
+          <div class="edu-info">
+            <h3 class="edu-school">University of the Cordilleras</h3>
+            <p>Governor Pack Road, Baguio, Benguet, 2600 Philippines</p>
+            <p>Bachelor of Science in Computer Science</p>
+            <span class="edu-years">2026 – Present</span>
+          </div>
+        </article>
+
+        <!-- Benigno V. Aldana National High School -->
+        <article class="edu-card glass edu-card--img-left">
+          <a class="edu-logo-link" href="https://benignoaldananhs.wordpress.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit Benigno V. Aldana National High School website">
+            <span class="edu-logo-plate">
+              <img src="images/BVANHSlogo.webp" alt="Benigno V. Aldana National High School logo" class="edu-logo">
+            </span>
+          </a>
+          <div class="edu-info">
+            <h3 class="edu-school">Benigno V. Aldana National High School</h3>
+            <p>Pozorrubio, Pangasinan, 2435 Philippines</p>
+            <p>Senior High School (STEM Strand)</p>
+            <ul class="edu-achieve">
+              <li>With High Honors</li>
+              <li>Governor's Academic Excellence (Silver Awardee)</li>
+              <li>Best in Work Immersion</li>
+            </ul>
+            <span class="edu-years">2024 – 2026</span>
+          </div>
+        </article>
+
+        <!-- Benigno V. Aldana National High School — Junior High -->
+        <article class="edu-card glass edu-card--img-left">
+          <a class="edu-logo-link" href="https://benignoaldananhs.wordpress.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit Benigno V. Aldana National High School website">
+            <span class="edu-logo-plate">
+              <img src="images/BVANHSlogo.webp" alt="Benigno V. Aldana National High School logo" class="edu-logo">
+            </span>
+          </a>
+          <div class="edu-info">
+            <h3 class="edu-school">Benigno V. Aldana National High School</h3>
+            <p>Pozorrubio, Pangasinan, 2435 Philippines</p>
+            <p>Junior High School (STE Program)</p>
+            <ul class="edu-achieve">
+              <li>With High Honors</li>
+              <li>Best in Research Title</li>
+              <li>Science Camp of the Year</li>
+              <li>Division 1st Place Robotics (Line Tracing)</li>
+            </ul>
+            <span class="edu-years">2020 – 2024</span>
+          </div>
+        </article>
+
+        <!-- Mary Help of Christians Learning Center — Elementary -->
+        <article class="edu-card glass edu-card--img-left">
+          <a class="edu-logo-link" href="https://www.facebook.com/Mhclc/" target="_blank" rel="noopener noreferrer" aria-label="Visit Mary Help of Christians Learning Center Facebook page">
+            <span class="edu-logo-plate">
+              <img src="images/MHCLClogo.jpg" alt="Mary Help of Christians Learning Center logo" class="edu-logo">
+            </span>
+          </a>
+          <div class="edu-info">
+            <h3 class="edu-school">Mary Help of Christians Learning Center</h3>
+            <p>Pozorrubio, Pangasinan, 2435 Philippines</p>
+            <p>Elementary</p>
+            <ul class="edu-achieve">
+              <li>With High Honors</li>
+            </ul>
+            <span class="edu-years">2014 – 2020</span>
+          </div>
+        </article>
+
+        <!-- Mary Help of Christians Learning Center — Kindergarten 2 -->
+        <article class="edu-card glass edu-card--img-left">
+          <a class="edu-logo-link" href="https://www.facebook.com/Mhclc/" target="_blank" rel="noopener noreferrer" aria-label="Visit Mary Help of Christians Learning Center Facebook page">
+            <span class="edu-logo-plate">
+              <img src="images/MHCLClogo.jpg" alt="Mary Help of Christians Learning Center logo" class="edu-logo">
+            </span>
+          </a>
+          <div class="edu-info">
+            <h3 class="edu-school">Mary Help of Christians Learning Center</h3>
+            <p>Pozorrubio, Pangasinan, 2435 Philippines</p>
+            <p>Kindergarten 2</p>
+            <span class="edu-years">2019 – 2020</span>
+          </div>
+        </article>
+
+        <!-- Pozorrubio Central School — Kindergarten 1 -->
+        <article class="edu-card glass edu-card--img-left">
+          <a class="edu-logo-link" href="https://www.facebook.com/pozorrubiocs101860" target="_blank" rel="noopener noreferrer" aria-label="Visit Pozorrubio Central School Facebook page">
+            <span class="edu-logo-plate">
+              <img src="images/PCSlogo.jpg" alt="Pozorrubio Central School logo" class="edu-logo">
+            </span>
+          </a>
+          <div class="edu-info">
+            <h3 class="edu-school">Pozorrubio Central School</h3>
+            <p>Pozorrubio, Pangasinan, 2435 Philippines</p>
+            <p>Kindergarten 1</p>
+            <span class="edu-years">2018 – 2019</span>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <section class="view" id="view-achievements" data-view="achievements">
+      <button class="back-btn glass" data-view-target="home" aria-label="Back to home">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path d="M15 4 7 12l8 8" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Home
+      </button>
+      <div class="stub-wrap">
+        <div class="stub-card glass">
+          <p class="eyebrow">Achievements</p>
+          <h2>Coming soon</h2>
+          <p class="stub-text">Awards and recognitions will be showcased here.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="view-family" data-view="family">
+      <button class="back-btn glass" data-view-target="home" aria-label="Back to home">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path d="M15 4 7 12l8 8" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Home
+      </button>
+      <div class="stub-wrap">
+        <div class="stub-card glass">
+          <p class="eyebrow">My Family</p>
+          <h2>Coming soon</h2>
+          <p class="stub-text">Photos and stories about my family will appear here.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="view-batchmates" data-view="batchmates">
+      <button class="back-btn glass" data-view-target="home" aria-label="Back to home">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path d="M15 4 7 12l8 8" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Home
+      </button>
+      <div class="stub-wrap">
+        <div class="stub-card glass">
+          <p class="eyebrow">My Batchmates</p>
+          <h2>Coming soon</h2>
+          <p class="stub-text">A tribute to the batch will be added here.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+<script src="script.js?v=9"></script>
+</body>
+</html>
