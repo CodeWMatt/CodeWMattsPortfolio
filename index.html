@@ -10,9 +10,18 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="style.css?v=34">
+<link rel="stylesheet" href="style.css?v=45">
 </head>
 <body>
+
+  <!-- loading screen (script.js) -->
+  <div class="loader is-on" id="loader" aria-hidden="true">
+    <div class="loader-inner">
+      <div class="loader-text" id="loaderText"></div>
+      <div class="loader-bar"><span id="loaderFill"></span></div>
+      <div class="loader-meta"><span id="loaderLabel">Loading</span><span id="loaderPct">0%</span></div>
+    </div>
+  </div>
 
   <!-- background blob layer -->
   <div class="bg-layer" aria-hidden="true">
@@ -22,6 +31,8 @@
     <div class="blob blob-d"></div>
     <div class="grain"></div>
   </div>
+
+  <div class="grid-lines" aria-hidden="true"></div>
 
   <!-- top nav -->
   <header class="topbar">
@@ -59,6 +70,35 @@
         <span class="float-badge glass fh-2"><span class="fb-icon">🧮</span>Solve</span>
         <span class="float-badge glass fh-3"><span class="fb-icon">💡</span>Think</span>
         <span class="float-badge glass fh-4"><span class="fb-icon">🎨</span>Create</span>
+      </div>
+
+      <!-- draggable lanyard + ID card (physics in script.js) — sits behind the tiles -->
+      <div class="lanyard-layer" id="lanyardLayer" aria-hidden="true">
+        <svg class="lanyard-svg" id="lanyardSvg" width="100%" height="100%">
+          <path class="lanyard-strap" id="strapA" d=""/>
+          <path class="lanyard-strap" id="strapB" d=""/>
+          <path class="lanyard-stitch" id="stitchA" d=""/>
+          <path class="lanyard-stitch" id="stitchB" d=""/>
+        </svg>
+
+        <div class="id-card" id="idCard" title="Drag me!">
+          <span class="id-clip"></span>
+          <span class="id-slot"></span>
+
+          <div class="id-head">
+            <span class="id-brand">CodeWMatt</span>
+            <span class="id-kind">Student ID</span>
+          </div>
+
+          <img src="images/id_pic.jpg" class="id-photo" alt="Matt Laurence F. Lopez" draggable="false">
+
+          <p class="id-name">Matt Laurence F. Lopez</p>
+          <p class="id-role">BS Computer Science</p>
+          <p class="id-school">University of the Cordilleras</p>
+          <p class="id-number">ID No. 26-1848-235</p>
+          <span class="id-barcode"></span>
+          <span class="id-sheen"></span>
+        </div>
       </div>
 
       <div class="home-intro">
@@ -348,6 +388,14 @@
 
   </main>
 
-<script src="script.js?v=9"></script>
+  <footer class="site-footer">
+    <span>&copy; 2026 Matt Laurence F. Lopez</span>
+    <span>Made with HTML, CSS and JavaScript</span>
+  </footer>
+
+<!-- glass bubble that follows the cursor (script.js) -->
+<div class="cursor-bubble" id="cursorBubble" aria-hidden="true"></div>
+
+<script src="script.js?v=13"></script>
 </body>
 </html>
