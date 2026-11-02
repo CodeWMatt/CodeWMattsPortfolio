@@ -122,6 +122,31 @@
     if (e.key === "ArrowLeft") pjShow(pj.i - 1);
   });
 
+  /* ---------- Moving text behind the ID card ---------- */
+  (function () {
+    const box = document.getElementById("idMarquee");
+    if (!box) return;
+    const ROWS = [
+      ["AVAILABLE FOR HIRE", false], ["SOFTWARE ENGINEER", true], ["HTML \u00B7 CSS \u00B7 JAVASCRIPT", false],
+      ["ROBOTICS CHAMPION", true], ["BAGUIO CITY, PH", false], ["LET\u2019S BUILD SOMETHING", true], ["MATT LOPEZ", false]
+    ];
+    ROWS.forEach((r, i) => {
+      const row = document.createElement("div");
+      row.className = "idm-row" + (r[1] ? " is-outline" : "");
+      const track = document.createElement("div");
+      track.className = "idm-track " + (i % 2 ? "to-right" : "to-left");
+      track.style.animationDuration = (48 + (i * 9) % 30) + "s";
+      for (let g = 0; g < 2; g++) {
+        const grp = document.createElement("span");
+        grp.className = "idm-grp";
+        grp.textContent = (r[0] + " \u2014 ").repeat(5);
+        track.appendChild(grp);
+      }
+      row.appendChild(track);
+      box.appendChild(row);
+    });
+  })();
+
   /* ---------- Code line typewriter ---------- */
   const codeEl = document.getElementById("codeLine");
   const lines = [
