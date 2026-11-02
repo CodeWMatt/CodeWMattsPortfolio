@@ -2479,3 +2479,14 @@ html[data-page="home"] .bento{ animation: pageIn 0.45s ease both; }
 @media (max-height: 760px) and (min-width: 901px){ .b-ul li:nth-child(2){ display: none; } }
 @media (max-width: 900px){ .b-edu, .b-intern{ grid-column: auto; } .b-intern{ order: 4; } .b-ul li:nth-child(2){ display: block !important; } }
 @media (max-height: 700px) and (min-width: 901px){ .b-intern .b-sub{ display: none; } }
+
+/* moving text behind the ID card */
+.id-marquee{ position: absolute; inset: 0; z-index: 0; display: flex; flex-direction: column; justify-content: space-evenly; overflow: hidden; pointer-events: none; -webkit-mask-image: linear-gradient(180deg, transparent, #000 10%, #000 90%, transparent); mask-image: linear-gradient(180deg, transparent, #000 10%, #000 90%, transparent); }
+.idm-row{ overflow: hidden; white-space: nowrap; line-height: 1; font-family: var(--font-display); font-weight: 800; font-size: clamp(1.3rem, 3.6vh, 2.3rem); letter-spacing: -0.01em; text-transform: uppercase; color: color-mix(in srgb, var(--text-primary) 3.5%, transparent); }
+.idm-row.is-outline{ color: transparent; -webkit-text-stroke: 1px color-mix(in srgb, var(--text-primary) 8%, transparent); }
+.idm-track{ display: inline-flex; width: max-content; animation: idmLeft 60s linear infinite; will-change: transform; }
+.idm-track.to-right{ animation-name: idmRight; }
+.idm-grp{ flex: none; }
+@keyframes idmLeft{ from{ transform: translateX(0); } to{ transform: translateX(-50%); } }
+@keyframes idmRight{ from{ transform: translateX(-50%); } to{ transform: translateX(0); } }
+@media (prefers-reduced-motion: reduce){ .idm-track{ animation: none; } }
