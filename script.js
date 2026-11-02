@@ -76,10 +76,17 @@
       text: "Line-tracing robotics competition. In Grade 10, in the STE program, our team finished as 1st Runner-Up." },
     decoder: { tag: "Project · CircuitVerse · Logic design", title: "Hex 7-Segment Decoder", imgs: ["images/decoder1.png"],
       text: "A 4-bit binary to hexadecimal 7-segment display decoder, built from logic gates in CircuitVerse. It extends my working decimal version." },
+    certs: { tag: "Certifications \u00B7 One Roadmap \u00B7 Nov 2, 2026", title: "CSS Skill Certification", imgs: ["images/cert1.png", "images/cert2.png", "images/cert3.png"],
+      text: "",
+      caps: [
+        { t: "CSS Skill Certification", x: "Passed the One Roadmap Skill Certification Test in CSS. Certificate ID CERT-16F407A9.", l: "https://www.oneroadmap.io/skills/css/certificate/CERT-16F407A9" },
+        { t: "JavaScript Skill Certification", x: "Passed the One Roadmap Skill Certification Test in JavaScript. Certificate ID CERT-95373A23.", l: "https://www.oneroadmap.io/skills/js/certificate/CERT-95373A23" },
+        { t: "Python Skill Certification", x: "Passed the One Roadmap Skill Certification Test in Python. Certificate ID CERT-503480F2.", l: "https://www.oneroadmap.io/skills/python/certificate/CERT-503480F2" }
+      ] },
     internship: { tag: "80-Hour Internship", title: "Print & Digital Media Production", imgs: ["images/internship.jpg"],
       text: "80 hours of hands-on print and digital media production in a print production studio." }
   };
-  const pj = { i: 0, list: [] };
+  const pj = { i: 0, list: [], caps: null };
   const pjImg = document.getElementById("pjImg");
   function pjShow(i) {
     if (!pj.list.length) return;
@@ -87,11 +94,17 @@
     pjImg.src = pj.list[pj.i];
     document.getElementById("pjCount").textContent = (pj.i + 1) + " / " + pj.list.length;
     document.querySelectorAll("#pjThumbs button").forEach((b, k) => b.classList.toggle("on", k === pj.i));
+    if (pj.caps) {
+      const c = pj.caps[pj.i], link = document.getElementById("pjLink");
+      document.getElementById("pjTitle").textContent = c.t;
+      document.getElementById("pjText").textContent = c.x;
+      link.textContent = "Verify on One Roadmap \u25B8"; link.href = c.l;
+    }
   }
   function openProject(key) {
     const d = PROJECTS[key];
     if (!d) return;
-    pj.list = d.imgs;
+    pj.list = d.imgs; pj.caps = d.caps || null;
     document.getElementById("pjTag").textContent = d.tag;
     document.getElementById("pjTitle").textContent = d.title;
     document.getElementById("pjText").textContent = d.text;
