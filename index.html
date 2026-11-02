@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="style.css?v=v2-32">
+<link rel="stylesheet" href="style.css?v=v2-33">
 </head>
 <body>
 
@@ -30,7 +30,7 @@
     <div class="brand-pill glass" aria-label="Matt Laurence F. Lopez">MLL</div>
     <nav class="nav-pill glass" aria-label="Pages">
       <button class="nav-link is-active" type="button" data-goto="home">Home Page</button>
-      <button class="nav-link" type="button" data-goto="soon">Personal Information</button>
+      <button class="nav-link" type="button" data-goto="info">Personal Information</button>
     </nav>
     <div class="v2-top-right">
       <a class="btn-pill btn-pill--solid" href="files/resume.pdf" target="_blank" rel="noopener">Resume</a>
@@ -145,14 +145,42 @@
     </section>
   </main>
 
-  <!-- ===== PAGE 2: Personal Information (coming soon) ===== -->
-  <main class="page-soon" id="page-soon" aria-label="Personal Information">
-    <section class="b-tile glass edge soon-card">
-      <p class="eyebrow">Personal Information</p>
-      <h2 class="b-title">Coming <span class="grad-text">soon.</span></h2>
-      <p class="b-sum">This page is still being built. Use the Prev button to head back to the Home Page.</p>
-      <button type="button" class="btn-pill btn-pill--solid" data-goto="home">&#9664; Back to Home Page</button>
+  <!-- ===== PAGE 2: Personal Information (one fixed screen) ===== -->
+  <main class="page-info" id="page-info" aria-label="Personal Information">
+    <section class="b-tile glass edge pi-id">
+      <div class="ring"><img class="b-photo" src="images/2by2.jpg" alt="Matt Laurence F. Lopez" draggable="false"></div>
+      <h2 class="b-name">Matt Laurence F. Lopez</h2>
+      <p class="b-role">Software Engineer</p>
+      <p class="b-status"><span class="status-dot"></span>Available for hire</p>
+      <p class="b-meta">&#128205; Baguio City, Philippines</p>
+      <div class="pi-actions">
+        <a class="btn-pill btn-pill--solid" href="files/resume.pdf" target="_blank" rel="noopener">Resume</a>
+        <button type="button" class="btn-pill btn-pill--ghost" data-open="contact">Hire me</button>
+      </div>
     </section>
+
+    <section class="b-tile glass edge pi-about">
+      <p class="eyebrow">Personal Information &middot; About me</p>
+      <h2 class="b-title">Software engineer. <span class="grad-text">Built for deadlines.</span></h2>
+      <p class="pi-text">I&rsquo;m a Software Engineer from Baguio City with a BS in Computer Science from the University of the Cordilleras. I build clean, responsive web projects in HTML, CSS and JavaScript and design logic circuits in CircuitVerse. I stay calm under pressure: I ran live TV broadcasts as Technical Director, finished on the podium twice in robotics line tracing, and completed an 80-hour print and digital media internship.</p>
+      <div class="pi-tags"><span class="tag-chip">Web Development</span><span class="tag-chip">Logic Design</span><span class="tag-chip">Robotics</span><span class="tag-chip">Broadcasting</span><span class="tag-chip">3D &amp; Animation</span></div>
+    </section>
+
+    <section class="b-tile glass edge pi-facts">
+      <h3 class="b-h">&#128199; Quick facts</h3>
+      <dl class="pi-dl">
+        <div><dt>Role</dt><dd>Software Engineer</dd></div>
+        <div><dt>Education</dt><dd>BS Computer Science &middot; UC</dd></div>
+        <div><dt>Based in</dt><dd>Baguio City, PH</dd></div>
+        <div><dt>Certified</dt><dd>CSS &middot; JavaScript &middot; Python</dd></div>
+        <div><dt>Email</dt><dd><a href="mailto:mattlaurenceuc@gmail.com">mattlaurenceuc@gmail.com</a></dd></div>
+        <div><dt>Phone</dt><dd><a href="tel:+639671855367">0967 185 5367</a></dd></div>
+      </dl>
+    </section>
+
+    <button type="button" class="b-tile glass edge b-link pi-btn" data-open="pi-skills"><span class="pi-ic">&#128736;&#65039;</span><strong>Skills &amp; Tools</strong><small>What I build with</small><em>Open &#9656;</em></button>
+    <button type="button" class="b-tile glass edge b-link pi-btn" data-open="pi-journey"><span class="pi-ic">&#128640;</span><strong>My Journey</strong><small>School to software</small><em>Open &#9656;</em></button>
+    <button type="button" class="b-tile glass edge b-link pi-btn" data-open="pi-drive"><span class="pi-ic">&#129517;</span><strong>What Drives Me</strong><small>How I work</small><em>Open &#9656;</em></button>
   </main>
 
   <!-- ===== PREV / NEXT (placement to be set; move this block anywhere) ===== -->
@@ -201,6 +229,45 @@
       </div>
       <p class="pj-text" id="pjText"></p>
       <a class="pj-link" id="pjLink" target="_blank" rel="noopener"></a>
+    </div>
+  </div>
+
+  <div class="modal" id="modal-pi-skills" aria-hidden="true">
+    <div class="modal-box glass-strong" role="dialog" aria-label="Skills and tools">
+      <button class="modal-x" data-close aria-label="Close">&times;</button>
+      <p class="eyebrow">Skills &amp; tools</p>
+      <h2 class="modal-title">What I build with</h2>
+      <div class="pi-grp"><p>Code</p><div><span class="tag-chip">HTML</span><span class="tag-chip">CSS</span><span class="tag-chip">JavaScript</span><span class="tag-chip">Python</span><span class="tag-chip">Responsive design</span></div></div>
+      <div class="pi-grp"><p>Logic &amp; hardware</p><div><span class="tag-chip">CircuitVerse</span><span class="tag-chip">Logic gates</span><span class="tag-chip">Boolean algebra</span><span class="tag-chip">Computer hardware</span><span class="tag-chip">Robotics</span></div></div>
+      <div class="pi-grp"><p>Create</p><div><span class="tag-chip">3D modeling</span><span class="tag-chip">Animation</span><span class="tag-chip">TV broadcasting</span><span class="tag-chip">Print &amp; digital media</span></div></div>
+      <div class="pi-grp"><p>Professional</p><div><span class="tag-chip">Leadership</span><span class="tag-chip">Teamwork</span><span class="tag-chip">Problem solving</span><span class="tag-chip">Working to deadlines</span></div></div>
+    </div>
+  </div>
+
+  <div class="modal" id="modal-pi-journey" aria-hidden="true">
+    <div class="modal-box glass-strong" role="dialog" aria-label="My journey">
+      <button class="modal-x" data-close aria-label="Close">&times;</button>
+      <p class="eyebrow">My journey</p>
+      <h2 class="modal-title">School to software</h2>
+      <ol class="pi-tl">
+        <li><span>2014 &ndash; 2020</span><div><strong>Elementary</strong><small>Graduated with High Honors</small></div></li>
+        <li><span>2020 &ndash; 2024</span><div><strong>Junior High &middot; STE</strong><small>Best in Research Title, Science Camp of the Year, 1st Runner-Up in robotics line tracing</small></div></li>
+        <li><span>2024 &ndash; 2026</span><div><strong>Senior High &middot; STEM</strong><small>Technical Director for TV Broadcasting, robotics Champion, Governor&rsquo;s Academic Excellence Silver Awardee, Best in Work Immersion</small></div></li>
+        <li class="now"><span>2026 &ndash; 2029</span><div><strong>BS Computer Science</strong><small>University of the Cordilleras</small></div></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="modal" id="modal-pi-drive" aria-hidden="true">
+    <div class="modal-box glass-strong" role="dialog" aria-label="What drives me">
+      <button class="modal-x" data-close aria-label="Close">&times;</button>
+      <p class="eyebrow">What drives me</p>
+      <h2 class="modal-title">How I work</h2>
+      <div class="pi-drive">
+        <div class="glass"><span>&#9000;&#65039;</span><strong>Build</strong><p>Turning an idea into something that actually runs, one line of code at a time.</p></div>
+        <div class="glass"><span>&#127912;</span><strong>Create</strong><p>Bringing things to life through 3D models, animation and video.</p></div>
+        <div class="glass"><span>&#129504;</span><strong>Learn</strong><p>Always ready to pick up a new skill and put it to use right away.</p></div>
+      </div>
     </div>
   </div>
 
@@ -380,6 +447,6 @@
 
   <div class="cursor-bubble" id="cursorBubble" aria-hidden="true"></div>
 
-  <script src="script.js?v=v2-32"></script>
+  <script src="script.js?v=v2-33"></script>
 </body>
 </html>
