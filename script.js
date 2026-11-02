@@ -44,8 +44,18 @@
   const prevBtn = document.getElementById("pagerPrev");
   const nextBtn = document.getElementById("pagerNext");
   const dots = document.querySelectorAll(".pager-dots i");
+  const PAGE_LABEL = { home: "Home Page", info: "Personal Info" };
+  let firstPage = true;
   function goPage(name) {
-    if (PAGES.indexOf(name) < 0) return;
+    if (PAGES.indexOf(name) < 0 || name === root.dataset.page) return;
+    if (!firstPage && window.portfolioLoader && window.portfolioLoader.run) {
+      window.portfolioLoader.run(PAGE_LABEL[name] || "Loading", 1575, () => applyPage(name));
+      return;
+    }
+    firstPage = false;
+    applyPage(name);
+  }
+  function applyPage(name) {
     const i = PAGES.indexOf(name);
     root.dataset.page = name;
     document.querySelectorAll(".v2-top .nav-link[data-goto]").forEach((b) =>
@@ -830,4 +840,14 @@
     card.classList.remove("is-sent");
     email.focus();
   });
+})();
+
+
+/* ---------- Personal Information tabs ---------- */
+(function () {
+  const tabs = document.querySelectorAll(".pi-tabs [data-tab]");
+  tabs.forEach((t) => t.addEventListener("click", () => {
+    tabs.forEach((x) => x.classList.toggle("is-on", x === t));
+    document.querySelectorAll(".pi-panel").forEach((p) => p.classList.toggle("is-on", p.dataset.panel === t.dataset.tab));
+  }));
 })();
