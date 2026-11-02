@@ -2490,3 +2490,16 @@ html[data-page="home"] .bento{ animation: pageIn 0.45s ease both; }
 @keyframes idmLeft{ from{ transform: translateX(0); } to{ transform: translateX(-50%); } }
 @keyframes idmRight{ from{ transform: translateX(-50%); } to{ transform: translateX(0); } }
 @media (prefers-reduced-motion: reduce){ .idm-track{ animation: none; } }
+
+/* ---- Certifications tile ---- */
+.b-cert{ margin-top: clamp(10px, 2vh, 18px); width: 100%; text-align: left; padding: 11px 12px 12px; border-radius: 18px; background: var(--glass-fill); border: 1px solid var(--glass-border); display: flex; flex-direction: column; gap: 8px; cursor: pointer; font: inherit; color: inherit; transition: transform .25s, border-color .25s; }
+.b-cert:hover{ transform: translateY(-2px); border-color: rgba(255,90,100,.55); }
+.b-cert-h{ display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 0.9rem; }
+.b-cert-h small{ font-size: 0.66rem; font-weight: 600; color: #ff4d5e; letter-spacing: .04em; }
+.b-cert-row{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.b-cert-row > span{ border-radius: 9px; overflow: hidden; border: 1px solid var(--glass-border); background: #fff; aspect-ratio: 1.414; display: block; }
+.b-cert-row img{ width: 100%; height: 100%; object-fit: cover; display: block; }
+.b-cert-names{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; font-size: 0.7rem; font-weight: 600; text-align: center; }
+.b-cert-sub{ font-size: 0.68rem; opacity: .7; }
+@media (max-height: 760px) and (min-width: 901px){ .b-cert-sub, .b-cert-names{ display: none; } }
+@media (max-height: 640px) and (min-width: 901px){ .b-cert-row{ display: none; } }
