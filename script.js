@@ -40,7 +40,7 @@
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
 
   /* ---------- Pages (Home Page <-> Personal Information) ---------- */
-  const PAGES = ["home", "soon"];
+  const PAGES = ["home", "info"];
   const prevBtn = document.getElementById("pagerPrev");
   const nextBtn = document.getElementById("pagerNext");
   const dots = document.querySelectorAll(".pager-dots i");
