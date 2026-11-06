@@ -39,12 +39,12 @@
   document.querySelectorAll(".modal").forEach((m) => m.addEventListener("pointerdown", (e) => { if (e.target === m) close(); }));
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
 
-  /* ---------- Pages (Home Page <-> Personal Information) ---------- */
+  /* ---------- Pages (Home Page <-> About Me) ---------- */
   const PAGES = ["home", "info"];
   const prevBtn = document.getElementById("pagerPrev");
   const nextBtn = document.getElementById("pagerNext");
   const dots = document.querySelectorAll(".pager-dots i");
-  const PAGE_LABEL = { home: "Home Page", info: "Personal Info" };
+  const PAGE_LABEL = { home: "Home Page", info: "About Me" };
   let firstPage = true;
   function goPage(name) {
     if (PAGES.indexOf(name) < 0 || name === root.dataset.page) return;
@@ -111,7 +111,7 @@
       link.textContent = "Verify on One Roadmap \u25B8"; link.href = c.l;
     }
   }
-  function openProject(key) {
+  function openProject(key, idx) {
     const d = PROJECTS[key];
     if (!d) return;
     pj.list = d.imgs; pj.caps = d.caps || null;
@@ -133,10 +133,10 @@
     document.getElementById("pjPrev").style.display = multi ? "" : "none";
     document.getElementById("pjNext").style.display = multi ? "" : "none";
     document.getElementById("pjCount").style.display = multi ? "" : "none";
-    pjShow(0);
+    pjShow(idx || 0);
     open("project");
   }
-  document.querySelectorAll("[data-project]").forEach((b) => b.addEventListener("click", () => openProject(b.dataset.project)));
+  document.querySelectorAll("[data-project]").forEach((b) => b.addEventListener("click", () => openProject(b.dataset.project, +b.dataset.idx || 0)));
   document.getElementById("pjPrev").addEventListener("click", () => pjShow(pj.i - 1));
   document.getElementById("pjNext").addEventListener("click", () => pjShow(pj.i + 1));
   document.addEventListener("keydown", (e) => {
@@ -843,11 +843,133 @@
 })();
 
 
-/* ---------- Personal Information tabs ---------- */
+/* ---------- About Me: count-up numbers when the page opens ---------- */
 (function () {
-  const tabs = document.querySelectorAll(".pi-tabs [data-tab]");
-  tabs.forEach((t) => t.addEventListener("click", () => {
-    tabs.forEach((x) => x.classList.toggle("is-on", x === t));
-    document.querySelectorAll(".pi-panel").forEach((p) => p.classList.toggle("is-on", p.dataset.panel === t.dataset.tab));
-  }));
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function countUp() {
+    document.querySelectorAll(".cu").forEach((el) => {
+      const to = +el.dataset.to || 0;
+      if (reduce) { el.textContent = to; return; }
+      const t0 = performance.now(), dur = 1300;
+      (function step(now) {
+        const p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(to * e);
+        if (p < 1) requestAnimationFrame(step);
+      })(t0);
+    });
+  }
+  new MutationObserver(() => { if (document.documentElement.dataset.page === "info") countUp(); })
+    .observe(document.documentElement, { attributes: true, attributeFilter: ["data-page"] });
+})();
+
+/* ---------- Home hero: gentle 3D tilt + glare following the cursor ---------- */
+(function () {
+  const stage = document.getElementById("heroStage");
+  if (!stage || window.matchMedia("(pointer: coarse), (prefers-reduced-motion: reduce)").matches) return;
+  const frame = stage.querySelector(".hero-frame");
+  const glare = stage.querySelector(".hero-glare");
+  stage.addEventListener("pointermove", (e) => {
+    const r = stage.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+    frame.style.setProperty("--ry", ((x - 0.5) * 12).toFixed(2) + "deg");
+    frame.style.setProperty("--rx", ((0.5 - y) * 10).toFixed(2) + "deg");
+    glare.style.setProperty("--gx", (x * 100).toFixed(1) + "%");
+    glare.style.setProperty("--gy", (y * 100).toFixed(1) + "%");
+  });
+  stage.addEventListener("pointerleave", () => { frame.style.setProperty("--rx", "0deg"); frame.style.setProperty("--ry", "0deg"); });
+})();
+
+
+/* ---------- Home hero: background text rows, sparks, parallax chips, role scramble ---------- */
+(function () {
+  const hero = document.getElementById("home");
+  if (!hero) return;
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const coarse = window.matchMedia("(pointer: coarse)").matches;
+
+  // outlined text rows behind everything
+  const bg = document.getElementById("heroBg");
+  if (bg) {
+    const words = ["MATT LOPEZ", "SOFTWARE ENGINEER", "MATT LOPEZ", "BUILD \u00B7 SHIP \u00B7 REPEAT"];
+    words.forEach((w) => {
+      const row = document.createElement("div");
+      row.className = "hb-row";
+      let s = ""; for (let i = 0; i < 12; i++) s += "<span>" + w + " \u2022</span>";
+      row.innerHTML = s;
+      bg.appendChild(row);
+    });
+  }
+
+  // parallax chips follow the cursor
+  const stage = document.getElementById("heroStage");
+  if (stage && !coarse && !reduce) {
+    hero.addEventListener("pointermove", (e) => {
+      stage.style.setProperty("--mx", ((e.clientX / innerWidth) - 0.5).toFixed(3));
+      stage.style.setProperty("--my", ((e.clientY / innerHeight) - 0.5).toFixed(3));
+    });
+  }
+
+  // role text scrambles through a few words
+  const roleEl = document.getElementById("heroRole");
+  if (roleEl && !reduce) {
+    const ROLES = ["Software Engineer", "Web Builder", "Robotics Champion", "Problem Solver"];
+    const POOL = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#$%&*<>/";
+    let idx = 0, busy = false;
+    function scramble(to) {
+      busy = true;
+      const from = roleEl.textContent, len = Math.max(from.length, to.length), start = performance.now(), dur = 700;
+      (function step(now) {
+        const p = Math.min(1, (now - start) / dur);
+        let out = "";
+        for (let i = 0; i < len; i++) {
+          const ch = to[i] || "";
+          if (i / len < p) out += ch;
+          else out += ch === " " ? " " : POOL[Math.floor(Math.random() * POOL.length)];
+        }
+        roleEl.textContent = out;
+        if (p < 1) requestAnimationFrame(step); else { roleEl.textContent = to; busy = false; }
+      })(start);
+    }
+    setInterval(() => {
+      if (busy || document.documentElement.dataset.page !== "home") return;
+      idx = (idx + 1) % ROLES.length; scramble(ROLES[idx]);
+    }, 3400);
+  }
+
+  // sparks: small red dots drift upward and shy away from the cursor
+  const cv = document.getElementById("heroSparks");
+  if (!cv || reduce) return;
+  const ctx = cv.getContext("2d");
+  let W = 0, H = 0, dpr = 1, mx = -999, my = -999, pts = [];
+  function size() {
+    const r = cv.getBoundingClientRect();
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    W = r.width; H = r.height; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const n = Math.round(Math.min(70, Math.max(24, W * H / 22000)));
+    pts = Array.from({ length: n }, () => ({ x: Math.random() * W, y: Math.random() * H, r: 0.8 + Math.random() * 2.2, v: 0.12 + Math.random() * 0.4, a: 0.25 + Math.random() * 0.55, ph: Math.random() * 6.28 }));
+  }
+  hero.addEventListener("pointermove", (e) => { const r = cv.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top; });
+  hero.addEventListener("pointerleave", () => { mx = my = -999; });
+  window.addEventListener("resize", size);
+  size();
+  let t = 0;
+  function tick() {
+    requestAnimationFrame(tick);
+    if (document.documentElement.dataset.page !== "home") return;
+    if (!W) size();
+    t += 0.016;
+    ctx.clearRect(0, 0, W, H);
+    for (const p of pts) {
+      p.y -= p.v; p.x += Math.sin(t + p.ph) * 0.25;
+      const dx = p.x - mx, dy = p.y - my, d2 = dx * dx + dy * dy;
+      if (d2 < 120 * 120) { const d = Math.sqrt(d2) || 1, f = (120 - d) / 120; p.x += (dx / d) * f * 3.2; p.y += (dy / d) * f * 3.2; }
+      if (p.y < -8) { p.y = H + 8; p.x = Math.random() * W; }
+      if (p.x < -8) p.x = W + 8; else if (p.x > W + 8) p.x = -8;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.283);
+      ctx.fillStyle = "rgba(255,90,100," + (p.a * (0.6 + 0.4 * Math.sin(t * 2 + p.ph))).toFixed(3) + ")";
+      ctx.shadowColor = "rgba(255,70,90,.8)"; ctx.shadowBlur = 8; ctx.fill();
+    }
+    ctx.shadowBlur = 0;
+  }
+  tick();
 })();
