@@ -2650,3 +2650,26 @@ html[data-page="info"] .hero{ display: none; }
 .ab-contact a:hover{ color: #ff6b78; }
 .ab-text{ max-width: 78ch; text-wrap: balance; } .ab-contact{ margin-top: clamp(7px, 1.3vh, 12px); }
 .ab-title .eyebrow.ab-contact{ margin: clamp(8px, 1.5vh, 14px) 0 0; }
+
+/* ===== Mobile polish (<= 900px): separate pages, fixed pager, compact About Me ===== */
+@media (max-width: 900px){
+  html[data-page="home"], html[data-page="home"] body{ overflow: hidden; height: 100%; }
+  .pager{ position: fixed; left: 50%; right: auto; bottom: calc(10px + env(safe-area-inset-bottom)); transform: translateX(-50%); margin: 0; padding: 6px 10px; gap: 10px; border-radius: 999px; background: color-mix(in srgb, var(--bg, #0b0b0d) 55%, transparent); backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4); border: 1px solid var(--glass-border); box-shadow: 0 10px 30px rgba(0,0,0,.35); z-index: 60; }
+  .page-info{ padding: 78px 14px calc(88px + env(safe-area-inset-bottom)); gap: 12px; }
+  .ab-title{ overflow: visible; }
+  .ab-h{ font-size: clamp(1.7rem, 8.4vw, 2.2rem); max-width: none; }
+  .ab-text{ font-size: .95rem; text-wrap: pretty; }
+  .ab-contact{ display: flex; flex-direction: column; gap: 3px; }
+  .ab-contact .sep{ display: none; }
+  .ab-avail{ margin: 6px 0 0; display: flex; width: fit-content; }
+  .ab-age{ padding: 16px 18px; }
+  .ab-big{ font-size: clamp(4.6rem, 22vw, 5.6rem); }
+  .ab-fc{ padding: 14px 16px; }
+  .ab-loc, .ab-col, .ab-yr{ grid-column: auto; }
+  .ab-wm{ width: 60px; height: 60px; }
+  .ab-hob .ab-chips{ gap: 8px; }
+  .ab-hob .tag-chip.ic-chip{ padding: 10px 12px; font-size: .82rem; }
+  .ab-skills .tag-chip{ padding: 6px 12px; }
+}
+@media (max-width: 380px){ .ab-hob .ab-chips{ grid-template-columns: 1fr; } .ab-hob .tag-chip.ic-chip:last-child{ grid-column: auto; } }
+@media (max-width: 900px){ .pager-btn{ white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; } }
