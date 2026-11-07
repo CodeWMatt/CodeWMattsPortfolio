@@ -973,3 +973,17 @@
   }
   tick();
 })();
+
+/* ---------- Mobile: swipe left/right to change page ---------- */
+(function(){
+  var sx=0, sy=0, t=0;
+  document.addEventListener('touchstart', function(e){ if(e.touches.length!==1) return; sx=e.touches[0].clientX; sy=e.touches[0].clientY; t=Date.now(); }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    if(window.innerWidth>900 || !sx) return;
+    var c=e.changedTouches[0], dx=c.clientX-sx, dy=c.clientY-sy;
+    sx=0;
+    if(Date.now()-t>700 || Math.abs(dx)<70 || Math.abs(dx)<Math.abs(dy)*1.8) return;
+    if(document.querySelector('.modal.is-open')) return;
+    var b=document.getElementById(dx<0?'pagerNext':'pagerPrev'); if(b && !b.disabled) b.click();
+  }, {passive:true});
+})();
