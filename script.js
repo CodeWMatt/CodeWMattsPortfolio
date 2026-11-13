@@ -661,11 +661,12 @@
   let busy = false;
 
   function build(text) {
-    textEl.innerHTML = "";
+    textEl.innerHTML = ""; textEl.classList.remove("is-done");
+    textEl.style.fontSize = Math.max(28, Math.min(104, (window.innerWidth * 0.9) / (text.length * 0.56))) + "px";
     return Array.from(text).map((c) => {
       const s = document.createElement("span");
-      s.className = "ch" + (c === " " ? " is-space" : "");
-      s.textContent = c === " " ? "\u00A0" : randChar();
+      s.className = "ch" + (c === " " ? " is-space" : ""); s.style.setProperty("--n", String(textEl.children.length));
+      s.textContent = c === " " ? "\u00A0" : c;
       textEl.appendChild(s);
       return { el: s, target: c };
     });
@@ -684,7 +685,7 @@
     loader.classList.add("is-on");
 
 
-    const lockWindow = duration * 0.78;               // last letter locks here
+    const lockWindow = duration * 0.62;               // last letter locks here
     const lockAt = chars.map((_, i) => 160 + (lockWindow - 160) * (i / Math.max(chars.length - 1, 1)) + Math.random() * 90);
     const start = performance.now();
     let lastSpin = 0;
@@ -698,11 +699,8 @@
         if (c.done) return;
         if (c.target === " ") { c.done = true; return; }
         if (reduceMotion || t >= lockAt[i]) {
-          c.el.textContent = c.target;
           c.el.classList.add("is-set");
           c.done = true;
-        } else if (doSpin) {
-          c.el.textContent = randChar();
         }
       });
 
@@ -713,15 +711,22 @@
       if (t < duration) {
         requestAnimationFrame(frame);
       } else {
-        chars.forEach((c) => { c.el.textContent = c.target === " " ? "\u00A0" : c.target; c.el.classList.add("is-set"); });
+        chars.forEach((c) => { c.el.classList.add("is-set"); });
         fillEl.style.width = "100%";
         pctEl.textContent = "100%";
-        if (onDone) onDone();
+        // clean exit: hold the finished title, lift it away, swap the page under the solid
+        // background, then fade the background out
         setTimeout(() => {
-          loader.classList.remove("is-on");
-          root.classList.remove("is-loading");
-          setTimeout(() => { busy = false; }, 450);
-        }, 260);
+          loader.classList.add("is-leaving");
+          setTimeout(() => {
+            if (onDone) onDone();
+            setTimeout(() => {
+              loader.classList.remove("is-on");
+              root.classList.remove("is-loading");
+              setTimeout(() => { loader.classList.remove("is-leaving"); busy = false; }, 500);
+            }, 120);
+          }, reduceMotion ? 0 : 420);
+        }, reduceMotion ? 0 : 300);
       }
     }
     requestAnimationFrame(frame);
@@ -1000,7 +1005,7 @@
   function enc(u){ return encodeURI(u).replace(/#/g,'%23'); }
   function probe(p){
     var want=(p.dataset.proof||p.dataset.solo||'').split('|').filter(Boolean);
-    p._want=want; p._ok=[]; p._dim=[]; var left=want.length; var cert=!!p.closest('.ach-honors');
+    p._want=want; p._ok=[]; p._dim=[]; var left=want.length; var cert=!!p.closest('.ach-honors')||/HKISO/.test(p.getAttribute('data-cap')||''); if(p.hasAttribute('data-norot')) cert=false;
     want.forEach(function(u,k){
       var t=new Image();
       t.onload=function(){ p._ok[k]=u; p._dim[k]=[t.naturalWidth,t.naturalHeight,cert&&t.naturalHeight>t.naturalWidth]; done(); }; t.onerror=function(){ done(); };
@@ -1131,4 +1136,22 @@
   }
   new MutationObserver(function(){ if(root.dataset.page==='ach') loop(); }).observe(root,{attributes:true,attributeFilter:['data-page']});
   if(root.dataset.page==='ach') loop();
+})();
+
+
+/* Timeline: keep the line and the travelling dot between the first and last dot */
+(function () {
+  const tl = document.querySelector(".ach-tl");
+  if (!tl) return;
+  function fit() {
+    const li = tl.querySelectorAll(".ach-item");
+    if (li.length < 2 || !tl.offsetHeight) return;
+    const a = li[0].offsetTop + li[0].offsetHeight / 2;
+    const b = tl.offsetHeight - (li[li.length - 1].offsetTop + li[li.length - 1].offsetHeight / 2);
+    tl.style.setProperty("--tl-a", a + "px");
+    tl.style.setProperty("--tl-b", b + "px");
+  }
+  new MutationObserver(() => { setTimeout(fit, 60); setTimeout(fit, 700); }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-page"] });
+  window.addEventListener("resize", fit);
+  setTimeout(fit, 400);
 })();
