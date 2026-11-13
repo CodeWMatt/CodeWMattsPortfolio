@@ -2714,7 +2714,7 @@ html[data-page="ach"] .page-ach [style*="--i"]{ animation: abUp .8s calc(var(--i
 .proof.has::after{ content: "\2713"; position: absolute; right: 2px; bottom: 2px; width: 14px; height: 14px; border-radius: 50%; background: #34d27b; color: #06210f; font-size: 9px; font-weight: 900; display: grid; place-items: center; }
 .proof:hover{ transform: scale(1.1); box-shadow: 0 8px 18px rgba(0,0,0,.45); z-index: 2; }
 .ach-tl{ position: relative; gap: clamp(6px, 1.2vh, 12px); }
-.ach-tl::before{ content: ""; position: absolute; left: 17px; top: 18px; bottom: 18px; width: 2px; background: linear-gradient(#ff6b78, transparent); opacity: .5; }
+.ach-tl::before{ content: ""; position: absolute; left: 17px; top: var(--tl-a, 18px); bottom: var(--tl-b, 18px); width: 2px; background: linear-gradient(#ff6b78, rgba(255,107,120,.55)); opacity: .55; }
 .ach-tl .ach-item{ position: relative; padding-left: 36px; } .ach-tl .ach-item::before{ content: ""; position: absolute; left: 11px; top: 50%; width: 12px; height: 12px; margin-top: -6px; border-radius: 50%; background: #ff6b78; box-shadow: 0 0 0 4px rgba(255,107,120,.2), 0 0 14px #ff6b78; }
 .ach-tl .proof{ order: 2; margin-left: auto; max-height: 74px; } .ach-tl .ach-tx{ order: 1; } .ach-tl .ach-tx b, .ach-tl .ach-tx span{ white-space: normal; }
 .ach-tl .ach-item{ justify-content: space-between; }
@@ -2843,8 +2843,8 @@ html[data-page="ach"] .page-ach .ach-card{ animation: achFly .95s calc(var(--i) 
 /* timeline: line draws, light travels, dots pulse */
 .ach-tl::before{ transform-origin: top; animation: tlDraw 1.4s .5s ease-out backwards; }
 @keyframes tlDraw{ from{ transform: scaleY(0); } to{ transform: scaleY(1); } }
-.ach-tl::after{ content: ""; position: absolute; left: 14px; top: 18px; width: 8px; height: 8px; border-radius: 50%; background: #fff; box-shadow: 0 0 12px 4px #ff6b78, 0 0 26px 8px rgba(255,107,120,.6); animation: tlRun 4.2s 1.8s ease-in-out infinite; }
-@keyframes tlRun{ 0%{ top: 14px; opacity: 0; } 10%{ opacity: 1; } 90%{ opacity: 1; } 100%{ top: calc(100% - 22px); opacity: 0; } }
+.ach-tl::after{ content: ""; position: absolute; left: 14px; top: calc(var(--tl-a, 18px) - 4px); width: 8px; height: 8px; border-radius: 50%; background: #fff; box-shadow: 0 0 12px 4px #ff6b78, 0 0 26px 8px rgba(255,107,120,.6); animation: tlRun 4.2s 1.8s ease-in-out infinite; }
+@keyframes tlRun{ 0%{ top: calc(var(--tl-a, 18px) - 4px); opacity: 0; } 10%{ opacity: 1; } 90%{ opacity: 1; } 100%{ top: calc(100% - var(--tl-b, 18px) - 4px); opacity: 0; } }
 .ach-tl .ach-item::before{ animation: dotPulse 2.6s calc(var(--k, 0) * .3s) ease-in-out infinite; }
 @keyframes dotPulse{ 0%, 100%{ box-shadow: 0 0 0 4px rgba(255,107,120,.2), 0 0 14px #ff6b78; } 50%{ box-shadow: 0 0 0 8px rgba(255,107,120,.05), 0 0 24px #ff6b78; } }
 /* honors: trophy watermark + medal glow on thumbs */
@@ -2900,3 +2900,48 @@ html[data-page="ach"] .page-ach .ach-card{ animation: achFly .95s calc(var(--i) 
 .ach-h{ overflow: visible; padding-bottom: 0; margin-bottom: 0; background: linear-gradient(100deg, #fff 0 38%, #ffd166 48%, #fff 58% 100%); background-size: 260% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: textSweep 6s 1.4s linear infinite; }
 @keyframes textSweep{ 0%, 40%{ background-position: 140% 0; } 100%{ background-position: -60% 0; } }
 @media (prefers-reduced-motion: reduce){ .ach-h{ animation: none; background: none; color: inherit; -webkit-text-fill-color: initial; } }
+
+/* ===== Continuous colour flow (home "F. Lopez", "built for live deadlines.") — subtle, no halo ===== */
+@keyframes flowLoop{ to{ background-position: 200% 0; } }
+.hero-name .grad-text, .ab-h .grad-text{ background-image: linear-gradient(90deg, var(--name-grad-1), var(--name-grad-2), var(--name-grad-1)); background-size: 200% 100%; background-repeat: repeat-x; }
+.hero-name .grad-text{ animation: heroWipe .95s .42s cubic-bezier(.2,.8,.2,1) both, flowLoop 5s 1.4s linear infinite; }
+.ab-h .grad-text{ display: block; width: fit-content; animation: flowLoop 5s linear infinite; }
+
+/* ===== Loading screen — editorial title reveal ===== */
+.ld-fx, .ld-canvas{ display: none !important; }
+.loader-inner{ position: static; width: auto; max-width: 94vw; }
+.loader-text{ font-family: var(--font-display, 'Inter', system-ui, sans-serif); font-weight: 800; letter-spacing: -.035em; line-height: 1.05; min-height: 1.05em; white-space: nowrap; text-align: center; }
+.loader-text .ch{ width: auto; display: inline-block; color: var(--text-primary); opacity: 0; transform: translateY(.28em); filter: blur(10px); transition: none; }
+.loader-text .ch.is-space{ width: .26em; }
+.loader-text .ch.is-set{ color: var(--text-primary); opacity: 1; transform: none; filter: blur(0); text-shadow: none; animation: none; transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1), filter .7s cubic-bezier(.16,1,.3,1); }
+.loader.is-leaving .loader-text .ch{ opacity: 0; transform: translateY(-.22em); filter: blur(10px); transition: opacity .38s ease-in, transform .42s cubic-bezier(.5,0,.75,0), filter .38s ease-in; transition-delay: calc(var(--n, 0) * 12ms); }
+.loader.is-leaving .loader-meta, .loader.is-leaving::after{ opacity: 0; transition: opacity .3s ease; }
+.loader.is-leaving .loader-bar{ opacity: 0; transition: opacity .3s ease; }
+.loader-bar{ position: absolute; left: 0; right: 0; bottom: 0; width: auto; height: 2px; margin: 0; border: 0; border-radius: 0; background: color-mix(in srgb, var(--text-primary) 8%, transparent); overflow: hidden; }
+.loader-bar span{ border-radius: 0; box-shadow: none; background: linear-gradient(90deg, var(--name-grad-1), var(--name-grad-2)); }
+.loader-bar span::before, .loader-bar span::after{ content: none; }
+.loader-meta{ position: absolute; left: clamp(20px, 3vw, 44px); right: clamp(20px, 3vw, 44px); bottom: clamp(18px, 3.4vh, 36px); width: auto; margin: 0; display: flex; align-items: flex-end; justify-content: space-between; font-weight: 600; font-size: .7rem; letter-spacing: .24em; text-transform: uppercase; color: var(--text-secondary); }
+.loader-meta #loaderPct{ font-family: var(--font-display, 'Inter', system-ui, sans-serif); font-weight: 300; font-size: clamp(2.4rem, 6vw, 4.6rem); letter-spacing: -.04em; line-height: .9; color: var(--text-primary); background: none; -webkit-text-fill-color: currentColor; font-variant-numeric: tabular-nums; }
+.loader::after{ content: "Matt Laurence F. Lopez  \00B7  Software Engineer"; position: absolute; left: clamp(20px, 3vw, 44px); top: clamp(18px, 3.4vh, 34px); font-size: .7rem; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--text-secondary); }
+@media (prefers-reduced-motion: reduce){ .hero-name .grad-text, .ab-h .grad-text{ animation: none; } .loader-text .ch{ opacity: 1; transform: none; filter: none; } }
+
+/* ===== Awards & Extra-curricular: picture cards (bigger proofs, all visible, no clicking) ===== */
+.ach-extra .proof{ container-type: size; }
+.ach-extra .proof.rot img{ inset: auto; left: 50%; top: 50%; width: 100cqh; height: 100cqw; transform: translate(-50%, -50%) rotate(-90deg); object-fit: cover; }
+@media (min-width: 901px){
+  .page-ach{ grid-template-rows: auto minmax(0, 1.3fr) minmax(0, 1fr); }
+  .ach-honors .ach-list, .ach-extra .ach-list{ display: grid; gap: clamp(6px, 1vh, 10px); }
+  .ach-honors .ach-list{ grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); }
+  .ach-extra .ach-list{ grid-template-columns: repeat(6, minmax(0, 1fr)); grid-template-rows: minmax(0, 1fr); }
+  .ach-honors .ach-item, .ach-extra .ach-item{ flex-direction: column; align-items: stretch; gap: 0; padding: 0; border-radius: 12px; border-color: rgba(255,255,255,.1); }
+  .ach-honors .ach-item:hover, .ach-extra .ach-item:hover{ transform: translateY(-3px); }
+  .ach-honors .ach-item .proof, .ach-extra .ach-item .proof{ order: 0; flex: 1 1 0; min-height: 0; width: 100%; height: auto; max-height: none; aspect-ratio: auto; margin: 0; border-radius: 11px 11px 0 0; }
+  .ach-honors .ach-item .ach-tx, .ach-extra .ach-item .ach-tx{ padding: 5px 8px 6px; }
+  .ach-honors .ach-item .ach-tx b, .ach-extra .ach-item .ach-tx b{ font-size: clamp(.68rem, 1.5vh, .8rem); white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .ach-honors .ach-item .ach-tx span{ font-size: clamp(.6rem, 1.25vh, .7rem); }
+  .ach-extra .ach-item .ach-tx span{ display: none; }
+}
+@media (min-width: 901px){ .ach-extra .ach-item .ach-tx b{ -webkit-line-clamp: 3; line-clamp: 3; font-size: clamp(.64rem, 1.35vh, .74rem); } .ach-honors .ach-item .ach-tx span{ text-overflow: ellipsis; } }
+
+/* Science Camp picture is a portrait photo: show it upright and whole */
+.proof[data-norot] img{ object-fit: contain; background: #0b0b0e; }
