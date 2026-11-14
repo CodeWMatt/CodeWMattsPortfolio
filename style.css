@@ -2945,3 +2945,5 @@ html[data-page="ach"] .page-ach .ach-card{ animation: achFly .95s calc(var(--i) 
 
 /* Science Camp picture is a portrait photo: show it upright and whole */
 .proof[data-norot] img{ object-fit: contain; background: #0b0b0e; }
+/* five schools: keep the timeline compact */
+@media (min-width: 901px){ .ach-tl .ach-item.sch .ach-tx b, .ach-tl .sch-name{ font-size: clamp(.72rem, 1.5vh, .84rem); } .ach-tl .ach-item.sch{ padding-top: 3px; padding-bottom: 3px; } .ach-tl .ach-item.sch .logo{ max-height: 52px; } }
