@@ -1172,11 +1172,8 @@
     });
   });
 
-  /* friends: find every photo (friends, friends 2, ...) whatever its extension, then rotate */
-  const fc = cards.find((c) => c.querySelector('img[src*="friends"]'));
-  if (!fc) return;
-  const SLOTS = [["friends"], ["friends 2", "friends2", "friends_2", "friends-2", "friends (2)"], ["friends 3", "friends3", "friends_3", "friends-3"]];
-  const EXT = ["jpg", "jpeg", "png", "webp", "JPG", "JPEG", "PNG"];
+  /* slideshows: friends + family photos (any extension), rotate every 3 s */
+  const EXT = ["jpg", "jpeg", "png", "webp", "JPG", "JPEG", "PNG", "WEBP"];
   function find(names) {
     const list = [];
     names.forEach((n) => EXT.forEach((e) => list.push("images/" + n + "." + e)));
@@ -1189,28 +1186,34 @@
       })();
     });
   }
-  const first = fc.querySelector("img");
-  first.classList.add("fam-slide");
-  Promise.all(SLOTS.map(find)).then((urls) => {
-    const found = urls.filter(Boolean);
-    if (!found.length) return;
-    first.src = found[0]; first.classList.add("on");
-    const imgs = [first];
-    found.slice(1).forEach((u) => {
-      const im = first.cloneNode(); im.removeAttribute("onerror"); im.classList.remove("on"); im.src = u;
-      first.parentNode.insertBefore(im, first.nextSibling); imgs.push(im);
+  function slideshow(card, slots) {
+    if (!card) return;
+    const first = card.querySelector("img");
+    first.classList.add("fam-slide");
+    Promise.all(slots.map(find)).then((urls) => {
+      const found = urls.filter(Boolean);
+      if (!found.length) return;
+      first.src = found[0]; first.classList.add("on");
+      const imgs = [first];
+      found.slice(1).forEach((u) => {
+        const im = first.cloneNode(); im.removeAttribute("onerror"); im.classList.remove("on"); im.src = u;
+        first.parentNode.insertBefore(im, first.nextSibling); imgs.push(im);
+      });
+      if (imgs.length < 2) return;
+      const dots = document.createElement("span"); dots.className = "fam-dots";
+      imgs.forEach(() => dots.appendChild(document.createElement("i")));
+      card.appendChild(dots);
+      const ds = dots.children;
+      let cur = 0, timer = null;
+      function show(n) { cur = n; imgs.forEach((im, k) => im.classList.toggle("on", k === n)); Array.from(ds).forEach((d, k) => { d.classList.remove("on"); if (k === n) { void d.offsetWidth; d.classList.add("on"); } }); }
+      function start() { clearInterval(timer); show(0); timer = setInterval(() => show((cur + 1) % imgs.length), 3000); }
+      new MutationObserver(() => { if (root.dataset.page === "fam") start(); else clearInterval(timer); }).observe(root, { attributes: true, attributeFilter: ["data-page"] });
+      if (root.dataset.page === "fam") start();
     });
-    if (imgs.length < 2) return;
-    const dots = document.createElement("span"); dots.className = "fam-dots";
-    imgs.forEach(() => dots.appendChild(document.createElement("i")));
-    fc.appendChild(dots);
-    const ds = dots.children;
-    let cur = 0, timer = null;
-    function show(n) { cur = n; imgs.forEach((im, k) => im.classList.toggle("on", k === n)); Array.from(ds).forEach((d, k) => { d.classList.remove("on"); if (k === n) { void d.offsetWidth; d.classList.add("on"); } }); }
-    function start() { clearInterval(timer); show(0); timer = setInterval(() => show((cur + 1) % imgs.length), 4000); }
-    new MutationObserver(() => { if (root.dataset.page === "fam") start(); else clearInterval(timer); }).observe(root, { attributes: true, attributeFilter: ["data-page"] });
-    if (root.dataset.page === "fam") start();
-  });
+  }
+  slideshow(cards.find((c) => c.querySelector('img[src*="friends"]')), [["friends"], ["friends2", "friends 2", "friends_2"], ["friends3", "friends 3", "friends_3"], ["friends4", "friends 4", "friends_4"], ["friends5"], ["friends6"]]);
+  slideshow(cards.find((c) => c.querySelector('img[src*="pets"]')), [["pets"], ["pets2", "pets 2", "pets_2"], ["pets3", "pets 3", "pets_3"], ["pets4"], ["pets5"]]);
+  slideshow(cards.find((c) => c.querySelector('img[src*="family"]')), [["family"], ["family2", "family 2", "family_2"], ["family3", "family 3", "family_3"], ["family4"], ["family5"]]);
 })();
 
 
