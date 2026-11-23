@@ -40,11 +40,11 @@
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
 
   /* ---------- Pages (Home Page <-> About Me) ---------- */
-  const PAGES = ["home", "info", "ach"];
+  const PAGES = ["home", "info", "ach", "fam"];
   const prevBtn = document.getElementById("pagerPrev");
   const nextBtn = document.getElementById("pagerNext");
   const dots = document.querySelectorAll(".pager-dots i");
-  const PAGE_LABEL = { home: "Home Page", info: "Personal Information", ach: "Achievements" };
+  const PAGE_LABEL = { home: "Home Page", info: "Personal Information", ach: "Achievements", fam: "Family & Friends" };
   let firstPage = true;
   function goPage(name) {
     if (PAGES.indexOf(name) < 0 || name === root.dataset.page) return;
@@ -532,7 +532,7 @@
 
   function rgb() {
     const cs = getComputedStyle(document.documentElement);
-    return [cs.getPropertyValue("--name-grad-1").trim() || "#ff3b4e", cs.getPropertyValue("--name-grad-2").trim() || "#ff8a6b"];
+    return [cs.getPropertyValue("--name-grad-1").trim() || "#8f3bff", cs.getPropertyValue("--name-grad-2").trim() || "#bc6bff"];
   }
   let cols = rgb();
   new MutationObserver(() => { cols = rgb(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["class", "data-theme"] });
@@ -631,7 +631,7 @@
       return "rgba(" + (n >> 16) + "," + ((n >> 8) & 255) + "," + (n & 255) + "," + a.toFixed(3) + ")";
     }
     const m = c.match(/[\d.]+/g);
-    return m ? "rgba(" + m[0] + "," + m[1] + "," + m[2] + "," + a.toFixed(3) + ")" : "rgba(255,59,78," + a + ")";
+    return m ? "rgba(" + m[0] + "," + m[1] + "," + m[2] + "," + a.toFixed(3) + ")" : "rgba(143,59,255," + a + ")";
   }
   requestAnimationFrame(frame);
 })();
@@ -971,8 +971,8 @@
       if (p.y < -8) { p.y = H + 8; p.x = Math.random() * W; }
       if (p.x < -8) p.x = W + 8; else if (p.x > W + 8) p.x = -8;
       ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.283);
-      ctx.fillStyle = "rgba(255,90,100," + (p.a * (0.6 + 0.4 * Math.sin(t * 2 + p.ph))).toFixed(3) + ")";
-      ctx.shadowColor = "rgba(255,70,90,.8)"; ctx.shadowBlur = 8; ctx.fill();
+      ctx.fillStyle = "rgba(163,90,255," + (p.a * (0.6 + 0.4 * Math.sin(t * 2 + p.ph))).toFixed(3) + ")";
+      ctx.shadowColor = "rgba(148,70,255,.8)"; ctx.shadowBlur = 8; ctx.fill();
     }
     ctx.shadowBlur = 0;
   }
@@ -1054,7 +1054,7 @@
   var cv=document.createElement('canvas'); cv.className='ach-confetti'; cv.setAttribute('aria-hidden','true'); document.body.appendChild(cv);
   var cx=cv.getContext('2d'), parts=[], raf=0;
   function burst(){
-    cv.width=innerWidth; cv.height=innerHeight; var cols=['#ffd166','#ff6b78','#ffffff','#ff9f1c','#ff4d5e'];
+    cv.width=innerWidth; cv.height=innerHeight; var cols=['#ffd166','#ab6bff','#ffffff','#ff9f1c','#994dff'];
     parts=[]; for(var i=0;i<90;i++){ parts.push({x:Math.random()*cv.width,y:-20-Math.random()*cv.height*.5,vx:(Math.random()-.5)*2,vy:2+Math.random()*3.5,r:Math.random()*Math.PI,vr:(Math.random()-.5)*.25,w:5+Math.random()*6,h:3+Math.random()*4,c:cols[i%cols.length]}); }
     cancelAnimationFrame(raf); var t0=performance.now();
     (function f(now){ var age=now-t0; cx.clearRect(0,0,cv.width,cv.height); var alive=0;
@@ -1154,4 +1154,138 @@
   new MutationObserver(() => { setTimeout(fit, 60); setTimeout(fit, 700); }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-page"] });
   window.addEventListener("resize", fit);
   setTimeout(fit, 400);
+})();
+
+
+/* Family & Friends: cursor glow/parallax, word-by-word captions, rotating friends photos (every 4 s) */
+(function () {
+  const root = document.documentElement, row = document.getElementById("famRow");
+  if (!row) return;
+  const cards = Array.from(row.querySelectorAll(".fam-card"));
+  cards.forEach((c) => {
+    const tx = c.querySelector(".fam-tx");
+    tx.innerHTML = tx.textContent.trim().split(/\s+/).map((w, k) => '<span class="w" style="--w:' + k + '">' + w + "</span>").join(" ");
+    c.addEventListener("pointermove", (e) => {
+      const r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      c.style.setProperty("--mx", x * 100 + "%"); c.style.setProperty("--my", y * 100 + "%");
+      c.style.setProperty("--px", ((x - .5) * -14).toFixed(1) + "px"); c.style.setProperty("--py", ((y - .5) * -14).toFixed(1) + "px");
+    });
+  });
+
+  /* friends: find every photo (friends, friends 2, ...) whatever its extension, then rotate */
+  const fc = cards.find((c) => c.querySelector('img[src*="friends"]'));
+  if (!fc) return;
+  const SLOTS = [["friends"], ["friends 2", "friends2", "friends_2", "friends-2", "friends (2)"], ["friends 3", "friends3", "friends_3", "friends-3"]];
+  const EXT = ["jpg", "jpeg", "png", "webp", "JPG", "JPEG", "PNG"];
+  function find(names) {
+    const list = [];
+    names.forEach((n) => EXT.forEach((e) => list.push("images/" + n + "." + e)));
+    return new Promise((res) => {
+      let i = 0;
+      (function next() {
+        if (i >= list.length) return res(null);
+        const im = new Image(), u = list[i++];
+        im.onload = () => res(u); im.onerror = next; im.src = u;
+      })();
+    });
+  }
+  const first = fc.querySelector("img");
+  first.classList.add("fam-slide");
+  Promise.all(SLOTS.map(find)).then((urls) => {
+    const found = urls.filter(Boolean);
+    if (!found.length) return;
+    first.src = found[0]; first.classList.add("on");
+    const imgs = [first];
+    found.slice(1).forEach((u) => {
+      const im = first.cloneNode(); im.removeAttribute("onerror"); im.classList.remove("on"); im.src = u;
+      first.parentNode.insertBefore(im, first.nextSibling); imgs.push(im);
+    });
+    if (imgs.length < 2) return;
+    const dots = document.createElement("span"); dots.className = "fam-dots";
+    imgs.forEach(() => dots.appendChild(document.createElement("i")));
+    fc.appendChild(dots);
+    const ds = dots.children;
+    let cur = 0, timer = null;
+    function show(n) { cur = n; imgs.forEach((im, k) => im.classList.toggle("on", k === n)); Array.from(ds).forEach((d, k) => { d.classList.remove("on"); if (k === n) { void d.offsetWidth; d.classList.add("on"); } }); }
+    function start() { clearInterval(timer); show(0); timer = setInterval(() => show((cur + 1) % imgs.length), 4000); }
+    new MutationObserver(() => { if (root.dataset.page === "fam") start(); else clearInterval(timer); }).observe(root, { attributes: true, attributeFilter: ["data-page"] });
+    if (root.dataset.page === "fam") start();
+  });
+})();
+
+
+/* Home hero: second pose flashes in every 5 s (1 s, with fades) + rising embers behind the figure */
+(function () {
+  const root = document.documentElement, fr = document.querySelector(".fb-frame"), cv = document.getElementById("fbEmbers");
+  if (!fr) return;
+  /* cross-fade: me1 fades out while me2 fades in (0.45 s), shows ~1 s, then swaps back */
+  setInterval(() => {
+    if (root.dataset.page !== "home") return;
+    fr.classList.add("alt");
+    setTimeout(() => fr.classList.remove("alt"), 1450);
+  }, 5000);
+  if (!cv || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const ctx = cv.getContext("2d"); let W = 0, H = 0, P = [];
+  function size() { const r = cv.getBoundingClientRect(); W = cv.width = Math.max(2, r.width | 0); H = cv.height = Math.max(2, r.height | 0); }
+  function mk(init) { return { x: Math.random() * W, y: init ? Math.random() * H : H * (.9 + Math.random() * .1), r: .6 + Math.random() * 2, v: .25 + Math.random() * .7, s: Math.random() * 6, h: Math.random() < .5 ? 355 : 35 }; }
+  function loop() {
+    if (root.dataset.page === "home") {
+      if (!W) size();
+      ctx.clearRect(0, 0, W, H);
+      while (P.length < 46) P.push(mk(true));
+      P.forEach((p, i) => {
+        p.y -= p.v; p.x += Math.sin(p.s += .02) * .4;
+        if (p.y < -10) P[i] = mk(false);
+        const a = Math.min(1, (p.y / H) * 1.6) * .8;
+        ctx.beginPath(); ctx.fillStyle = "hsla(" + p.h + ",100%,68%," + a.toFixed(2) + ")"; ctx.shadowColor = "hsl(" + p.h + ",100%,60%)"; ctx.shadowBlur = 8;
+        ctx.arc(p.x, p.y, p.r, 0, 6.283); ctx.fill();
+      });
+    }
+    requestAnimationFrame(loop);
+  }
+  window.addEventListener("resize", size); size(); loop();
+})();
+
+/* ---- Home hero: auto-fit the figure to its visible pixels (works with any cut-out PNG) ---- */
+(function(){
+  var stage=document.getElementById("heroStage"); if(!stage) return;
+  var A=stage.querySelector(".fb-a"), B=stage.querySelector(".fb-b"),
+      BA=stage.querySelector(".fb-back-a"), BB=stage.querySelector(".fb-back-b");
+  if(!A||!B) return;
+  function bbox(src,cb){
+    var im=new Image(); im.onload=function(){
+      try{
+        var s=Math.min(1,320/im.naturalWidth), w=Math.max(1,Math.round(im.naturalWidth*s)), h=Math.max(1,Math.round(im.naturalHeight*s));
+        var c=document.createElement("canvas"); c.width=w; c.height=h; var x=c.getContext("2d"); x.drawImage(im,0,0,w,h);
+        var d=x.getImageData(0,0,w,h).data, l=w,r=0,t=h,b=0;
+        for(var j=0;j<h;j++)for(var i=0;i<w;i++) if(d[(j*w+i)*4+3]>40){ if(i<l)l=i; if(i>r)r=i; if(j<t)t=j; if(j>b)b=j; }
+        if(r<l||b<t) return cb(null);
+        cb({l:l/w,r:1-(r+1)/w,t:t/h,b:1-(b+1)/h,nw:im.naturalWidth,nh:im.naturalHeight});
+      }catch(e){ cb(null); }
+    }; im.onerror=function(){cb(null)}; im.src=src;
+  }
+  function run(){
+    bbox(A.currentSrc||A.src,function(p){ bbox(B.currentSrc||B.src,function(q){
+      var u=p&&q?{l:Math.min(p.l,q.l),r:Math.min(p.r,q.r),t:Math.min(p.t,q.t),b:Math.min(p.b,q.b),nw:p.nw,nh:p.nh}:(p||q); if(!u) return;
+      var pad=0.004; ["l","r","t","b"].forEach(function(k){u[k]=Math.max(0,u[k]-pad)});
+      var vb="inset("+(u.t*100)+"% "+(u.r*100)+"% "+(u.b*100)+"% "+(u.l*100)+"%)";
+      A.style.objectViewBox=vb; B.style.objectViewBox=vb;
+      var vw=(1-u.l-u.r)*u.nw, vh=(1-u.t-u.b)*u.nh;
+      stage.style.setProperty("--fb-ar",(vw/vh).toFixed(4));
+      var ch=0.42, bb=1-(u.t+ch*(1-u.t-u.b)), bv="inset("+(u.t*100)+"% "+(u.r*100)+"% "+(bb*100)+"% "+(u.l*100)+"%)";
+      [BA,BB].forEach(function(e){ if(e){ e.style.objectViewBox=bv; e.style.aspectRatio=(vw/(vh*ch)).toFixed(4); } });
+      stage.classList.add("fit");
+    }); });
+  }
+  if(A.complete&&B.complete) run(); else { var n=0, go=function(){ if(++n>=2) run(); }; A.addEventListener("load",go); B.addEventListener("load",go); }
+})();
+
+/* ---- Home hero: mouse parallax for the floating tech tiles ---- */
+(function(){
+  var st=document.getElementById("heroStage"); if(!st||!window.matchMedia||matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  document.addEventListener("pointermove",function(e){
+    if(document.documentElement.getAttribute("data-page")!=="home") return;
+    st.style.setProperty("--px",((e.clientX/innerWidth)*2-1).toFixed(3));
+    st.style.setProperty("--py",((e.clientY/innerHeight)*2-1).toFixed(3));
+  },{passive:true});
 })();
